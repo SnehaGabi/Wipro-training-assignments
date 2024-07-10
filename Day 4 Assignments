@@ -1,0 +1,81 @@
+using System;
+
+class NumberToWordsConverter
+{
+    // Arrays for mapping digits to words
+    static string[] ones = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+    static string[] tens = { "zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+    static string[] teens = { "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen",
+                              "seventeen", "eighteen", "nineteen" };
+
+    // Function to convert a two-digit number into words
+    static string ConvertTens(int num)
+    {
+        if (num < 10)
+            return ones[num];
+        else if (num < 20)
+            return teens[num - 10];
+        else
+        {
+            return tens[num / 10] + " " + ones[num % 10];
+        }
+    }
+
+    // Function to convert a three-digit number into words
+    static string ConvertHundreds(int num)
+    {
+        if (num < 100)
+            return ConvertTens(num);
+        else
+        {
+            return ones[num / 100] + " hundred " + ConvertTens(num % 100);
+        }
+    }
+
+    // Function to convert a number into words
+    static string NumberToWords(int num)
+    {
+        if (num == 0)
+            return "zero";
+
+        string words = "";
+
+        if ((num / 1000000) > 0)
+        {
+            words += NumberToWords(num / 1000000) + " million ";
+            num %= 1000000;
+        }
+
+        if ((num / 1000) > 0)
+        {
+            words += NumberToWords(num / 1000) + " thousand ";
+            num %= 1000;
+        }
+
+        if ((num / 100) > 0)
+        {
+            words += ConvertHundreds(num);
+        }
+        else if ((num % 100) > 0)
+        {
+            words += ConvertTens(num);
+        }
+
+        return words;
+    }
+
+    static void Main()
+    {
+        // Example usage
+        int input1 = 123;
+        int input2 = 2024;
+
+        Console.WriteLine("Input :  " + input1);
+        Console.WriteLine("Output : " + NumberToWords(input1));
+
+        Console.WriteLine();
+
+        Console.WriteLine("Input :  " + input2);
+        Console.WriteLine("Output : " + NumberToWords(input2));
+    }
+}
